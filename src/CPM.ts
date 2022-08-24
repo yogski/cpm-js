@@ -1,11 +1,11 @@
-import { Cell } from "./type/base";
+import { WeightedIndicatorCell, BasicCell } from "./type/base";
 
 export class CPM {
   
-  static WeightMap(arr: Array<Cell>): Array<Cell> {
-    let sum = this.sumCells(arr);
-    return arr.map((cell) => { return {...cell, value: cell.value / sum} });
-  }
+  // static WeightedIndicator(arr: Array<BasicCell>): Array<WeightedIndicatorCell> {
+  //   let sum = this.sumCells(arr);
+  //   return arr.map((cell) => { return {...cell, value: cell.value / sum} });
+  // }
 
   /**
    * map an array of numbers to its weight distribution. 
@@ -17,12 +17,5 @@ export class CPM {
     return arr.map((el) => el / sum);
   }
 
-  static sumCells(arr: Array<Cell>): number {
-    return arr.map((cell) => cell.value).reduce((acc, val) => (acc + val), 0);
-  }
-
-  static mapToCells(arr: Array<number>) {
-    
-  }
 }
 

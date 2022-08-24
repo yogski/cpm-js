@@ -1,14 +1,22 @@
-export type Cell = {
+export type BasicCell = {
   name: string,
   value: number
 }
 
-export type WeightCell = {
+export type WeightedIndicatorCell = {
   name: string,
-  value: number
+  weight: number
 }
 
-export type EntityCell = {
+export type ElementCell = {
+  indicator: WeightedIndicatorCell,
+  value: number,
+  weightedValue: number,
+  description?: string
+}
+
+export type ProfileCell = {
   id: string,
-  value: number
+  elements: Array<ElementCell>,
+  totalValue: number
 }

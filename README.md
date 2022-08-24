@@ -1,14 +1,131 @@
-# Example TypeScript Package ready to be published on npm for 2021
+# CPM JS: Generate CPM Analysis from app
 
-This is an example TypeScript Package ready to be published on npm. It has been set up with automated tests and package publishing workflow using GitHub Actions CI/CD. It is made primarily for GitHub + VS Code (Windows / Mac / Linux) users who are about to write and publish their first TypeScript npm package. This package could serve as a starter / boilerplate / demo for them.
+## Intro
 
-[![npm package](https://img.shields.io/badge/npm%20i-example--typescript--package-brightgreen)](https://www.npmjs.com/package/example-typescript-package) [![version number](https://img.shields.io/npm/v/example-typescript-package?color=green&label=version)](https://github.com/tomchen/example-typescript-package/releases) [![Actions Status](https://github.com/tomchen/example-typescript-package/workflows/Test/badge.svg)](https://github.com/tomchen/example-typescript-package/actions) [![License](https://img.shields.io/github/license/tomchen/example-typescript-package)](https://github.com/tomchen/example-typescript-package/blob/main/LICENSE)
+This package enables CPM (Competitive Profile Matrix) analysis using Typescript/Javascript instead of Excel/spreadsheet. CPM is an analysis tool to determine strengths and weaknesses of competing products or companies based on defined critical success factors. The result shows profile of mapped capabilities for each product/company, making easier to determine your advantages and disadvantages. It serves as step for further analysis whether to catch up, focusing on specific niche, or other directions.
 
-It uses npm, TypeScript compiler, Jest, webpack, ESLint, Prettier, husky, pinst, commitlint. The production files include CommonJS, ES Modules, UMD version and TypeScript declaration files.
+## Installation
 
-<p align="center">
-<a href="https://github.com/" title="Github"><img src="https://github.com/get-icon/geticon/raw/master/icons/github-icon.svg" alt="Github" width="21px" height="21px"></a> <a href="https://code.visualstudio.com/" title="Visual Studio Code"><img src="https://github.com/get-icon/geticon/raw/master/icons/visual-studio-code.svg" alt="Visual Studio Code" width="21px" height="21px"></a> <a href="https://www.microsoft.com/windows" title="Windows"><img src="https://github.com/get-icon/geticon/raw/master/icons/microsoft-windows.svg" alt="Windows" width="21px" height="21px"></a> <a href="https://www.apple.com/macos/" title="Mac OS"><img src="https://github.com/get-icon/geticon/raw/master/icons/macOS.svg" alt="Mac OS" width="21px" height="21px"></a> <a href="https://www.linuxfoundation.org/" title="Linux"><img src="https://github.com/get-icon/geticon/raw/master/icons/linux-tux.svg" alt="Linux" width="21px" height="21px"></a> <a href="https://www.npmjs.com/" title="npm"><img src="https://github.com/get-icon/geticon/raw/master/icons/npm.svg" alt="npm" width="21px" height="21px"></a> <a href="https://www.typescriptlang.org/" title="Typescript"><img src="https://github.com/get-icon/geticon/raw/master/icons/typescript-icon.svg" alt="Typescript" width="21px" height="21px"></a> <a href="https://jestjs.io/" title="Jest"><img src="https://github.com/get-icon/geticon/raw/master/icons/jest.svg" alt="Jest" width="21px" height="21px"></a> <a href="https://webpack.js.org/" title="webpack"><img src="https://github.com/get-icon/geticon/raw/master/icons/webpack.svg" alt="webpack" width="21px" height="21px"></a> <a href="https://eslint.org/" title="ESLint"><img src="https://github.com/get-icon/geticon/raw/master/icons/eslint.svg" alt="ESLint" width="21px" height="21px"></a> <a href="https://prettier.io/" title="Prettier"><img src="https://github.com/get-icon/geticon/raw/master/icons/prettier.svg" alt="Prettier" width="21px" height="21px"></a> <a href="https://yarnpkg.com/" title="yarn"><img src="https://github.com/get-icon/geticon/raw/master/icons/yarn.svg" alt="yarn" width="21px" height="21px"></a>
-</p>
+```bash
+npm install cpm-js
+```
+
+## Usage
+
+### Analysis Workflow
+
+Before using the package, it is advised to read this part first.
+Unlike spreadsheet where one can fill cells in any order, this package requires sequential steps to work correctly. The steps are as follows:
+1. Get following input ready: 
+   1. Critical success factors
+   2. Competing product/companies scores
+2. Generate critical success factors
+3. Fill in product/companies data and generate a profile
+4. Output (generated as JSON file)
+5. Analysis
+
+### Package Workflow
+
+#### Generate CSF (Critical Success Factors) List 
+
+In practice, CSF are derived from survey result.
+Some common survey designs are:
+- List of multiple criteria
+  ```
+  Example
+
+  Q: From most important to least important, What are critical success factors for a smartphone?
+  A (aggregated answers):
+  price, brand, features
+  features, aftersale
+  brand, RAM, camera
+  camera, price, color, screen quality, size, RAM
+  ```
+
+  In this case, use `rawInputToWeights()` from `Cast` class to convert raw input to list of CSF.
+  ```javascript
+  import { Cast } from "cpm-js";
+
+  let rawInput = `price, brand, features
+  features, aftersale
+  brand, RAM, camera
+  camera, price, color, screen quality, size, RAM`;
+  let CSF = Cast.rawInputToWeights(rawInput);
+  console.log(CSF);
+  /*
+  [
+    { name: 'price', weight: 0.18452380952380953 },
+    { name: 'brand', weight: 0.20833333333333331 },
+    { name: 'features', weight: 0.20833333333333331 },
+    { name: 'aftersale', weight: 0.08333333333333333 },
+    { name: 'ram', weight: 0.09523809523809523 },
+    { name: 'camera', weight: 0.11309523809523808 },
+    { name: 'color', weight: 0.047619047619047616 },
+    { name: 'screen quality', weight: 0.03571428571428571 },
+    { name: 'size', weight: 0.023809523809523808 }
+  ]
+  */
+  ```
+- List of multiple criteria + values
+  ```
+  Example
+
+  Q: From most important to least important, What are critical success factors for a smartphone?
+  A:
+  [
+    {
+      price: 2,
+      brand: 3,
+      camera: 5,
+      RAM: 4,
+      aftersales: 2
+    },
+    {
+      price: 5,
+      brand: 3,
+      camera: 3,
+      RAM: 3,
+      aftersales: 1
+    }
+  ]
+  ```
+
+  In this case, use `JSONToWeights()` from `Cast` class to convert raw input to list of CSF.
+  ```javascript
+  import { Cast } from "cpm-js";
+
+  let jsonInput = [
+    {
+      price: 2,
+      brand: 3,
+      camera: 5,
+      RAM: 4,
+      aftersales: 2
+    },
+    {
+      price: 5,
+      brand: 3,
+      camera: 3,
+      RAM: 3,
+      aftersales: 1
+    }
+  ];
+  let CSF = Cast.rawInputToWeights(jsonInput);
+  console.log(CSF);
+  /*
+  [
+    { name: 'price', weight: 0.18452380952380953 },
+    { name: 'brand', weight: 0.20833333333333331 },
+    { name: 'features', weight: 0.20833333333333331 },
+    { name: 'aftersale', weight: 0.08333333333333333 },
+    { name: 'ram', weight: 0.09523809523809523 },
+    { name: 'camera', weight: 0.11309523809523808 },
+    { name: 'color', weight: 0.047619047619047616 },
+    { name: 'screen quality', weight: 0.03571428571428571 },
+    { name: 'size', weight: 0.023809523809523808 }
+  ]
+  */
+  ```
 
 ## Development
 
