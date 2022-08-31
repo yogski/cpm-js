@@ -114,7 +114,7 @@ Some common survey designs are:
   console.log(CSF);
   /*
   [
-    { name: 'price', weight: 0.18452380952380953 },
+    { name: 'price', weight: 3.5 },
     { name: 'brand', weight: 0.20833333333333331 },
     { name: 'features', weight: 0.20833333333333331 },
     { name: 'aftersale', weight: 0.08333333333333333 },

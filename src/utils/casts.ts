@@ -59,8 +59,26 @@ export class Cast {
     return res;
   }
 
-  static JSONToWeights(tabs: any): Array<WeightedIndicatorCell> {
-    return []
+  static JSONToWeights(tabs: Array<any>): Array<WeightedIndicatorCell> {
+    if (tabs.length === 0) return [];
+
+    let totalSum = 0;
+    let m = new Map();
+    let res = [] as Array<WeightedIndicatorCell>;
+
+    tabs.map((answer) => {
+      Object.keys(answer).map((k) => {
+        if (m.has(k)) {
+          m.set(k, m.get(k) + answer[k]);
+        } else {
+          m.set(k, answer[k]);
+        }
+        totalSum += answer[k]
+      })
+    })
+
+    m.forEach((v, k) => res.push({ name: k, weight: v / totalSum }));
+    return res;
   }
 
   /**
