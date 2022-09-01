@@ -26,7 +26,7 @@ export class Cast {
     // deal with negative cases
     if (names.length === 0 || values.length === 0 || names.length !== values.length) return [];
 
-    let res: Array<WeightedIndicatorCell> = [];
+    let res = [] as Array<WeightedIndicatorCell>;
     let total = 0;
     let m = new Map();
     for (let i=0; i<names.length; i++) {
@@ -79,6 +79,10 @@ export class Cast {
 
     m.forEach((v, k) => res.push({ name: k, weight: v / totalSum }));
     return res;
+  }
+
+  static ManualToWeights(tabs: Array<BasicCell>): Array<WeightedIndicatorCell> {
+    return this.arraysToWeights(tabs.map((t) => t.name), tabs.map((t) => t.value));
   }
 
   /**

@@ -20,3 +20,17 @@ export type ProfileCell = {
   elements: Array<ElementCell>,
   totalValue: number
 }
+
+export type CSFConfig = {
+  type : CSFInputType
+}
+
+export enum CSFInputType {
+  RAW = "raw",          // raw text
+  JSON = "json",      // tabulated data in JSON format
+  MANUAL = "manual"     // manually inserted name and value
+}
+
+export type CSFCell = Array<WeightedIndicatorCell>
+
+export type ProfileInput = Array<BasicCell>

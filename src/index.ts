@@ -1,3 +1,3 @@
-import { Num } from './Num'
+import { CPM } from './CPM'
 
-export { Num }
+export { CPM }
