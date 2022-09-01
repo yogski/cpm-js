@@ -27,15 +27,15 @@ export class CPM {
     switch (config.type) {
 
       case "raw":
-        if (typeof source !== "string") throw new Error(`String input expected, receiving ${typeof source}.`);
+        if (typeof source !== "string") throw new TypeError(`String input expected, receiving ${typeof source}.`);
         return Cast.rawInputToWeights(source);
 
       case "json":
-        if (typeof source !== "object") throw new Error(`Object input expected, receiving ${typeof source}.`)
+        if (typeof source !== "object") throw new TypeError(`Object input expected, receiving ${typeof source}.`)
         return Cast.JSONToWeights(source);
 
       case "manual":
-        if (typeof source !== "object") throw new Error(`Object input expected, receiving ${typeof source}.`);
+        if (typeof source !== "object") throw new TypeError(`Object input expected, receiving ${typeof source}.`);
         return Cast.ManualToWeights(source);
 
       default:
