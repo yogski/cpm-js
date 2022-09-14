@@ -23,7 +23,7 @@ export class Cast {
   }
 
   static arraysToWeights(names: Array<string>, values: Array<number>): Array<WeightedIndicatorCell> {
-    // deal with negative cases
+    
     if (names.length === 0 || values.length === 0 || names.length !== values.length) return [];
 
     let res = [] as Array<WeightedIndicatorCell>;
